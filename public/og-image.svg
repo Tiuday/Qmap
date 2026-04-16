@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#09090f"/>
+  <!-- Grid lines -->
+  <defs>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(139,92,246,0.08)" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(139,92,246,0.25)"/>
+      <stop offset="100%" stop-color="rgba(139,92,246,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <ellipse cx="600" cy="315" rx="500" ry="300" fill="url(#glow)"/>
+  <!-- Heatmap blobs -->
+  <circle cx="480" cy="280" r="120" fill="rgba(224,64,251,0.18)"/>
+  <circle cx="680" cy="340" r="80" fill="rgba(170,0,255,0.15)"/>
+  <circle cx="380" cy="380" r="60" fill="rgba(74,20,140,0.2)"/>
+  <!-- Location pins -->
+  <circle cx="480" cy="280" r="8" fill="#e040fb" opacity="0.9"/>
+  <circle cx="680" cy="340" r="6" fill="#22c55e" opacity="0.9"/>
+  <circle cx="380" cy="380" r="6" fill="#f59e0b" opacity="0.9"/>
+  <circle cx="760" cy="220" r="5" fill="#ef4444" opacity="0.9"/>
+  <!-- Logo mark -->
+  <rect x="80" y="80" width="60" height="60" rx="14" fill="#8b5cf6"/>
+  <path d="M110 96C99.5 96 91 104.5 91 115c0 13.1 19 30 19 30s19-16.9 19-30c0-10.5-8.5-19-19-19zm0 25.5c-3.6 0-6.5-2.9-6.5-6.5s2.9-6.5 6.5-6.5 6.5 2.9 6.5 6.5-2.9 6.5-6.5 6.5z" fill="white"/>
+  <!-- Wordmark -->
+  <text x="158" y="125" font-family="system-ui, sans-serif" font-size="52" font-weight="700" fill="white">Qmap</text>
+  <!-- Headline -->
+  <text x="80" y="340" font-family="system-ui, sans-serif" font-size="72" font-weight="800" fill="white">Know the vibe</text>
+  <text x="80" y="430" font-family="system-ui, sans-serif" font-size="72" font-weight="800" fill="url(#pg)">before you go.</text>
+  <defs>
+    <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+  </defs>
+  <!-- Sub -->
+  <text x="80" y="510" font-family="system-ui, sans-serif" font-size="28" fill="rgba(255,255,255,0.45)">Real-time safety · crowd density · vibes — built for Gen Z</text>
+</svg>
