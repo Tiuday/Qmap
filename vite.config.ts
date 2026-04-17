@@ -17,4 +17,20 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Heavy map lib in its own chunk — loaded lazily on /map route
+          'maplibre': ['maplibre-gl'],
+          // React ecosystem
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          // Animation
+          'motion': ['framer-motion', 'motion'],
+        },
+      },
+    },
+    // Raise warning threshold — maplibre is inherently large
+    chunkSizeWarningLimit: 900,
+  },
 })
