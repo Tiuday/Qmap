@@ -146,6 +146,16 @@ body {
   opacity: 0.4;
 }
 
+/* ── Section gap — breathing room between every section ── */
+.section-gap {
+  height: 6rem;          /* 96px of pure white space */
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .section-gap { height: 9rem; }   /* 144px on desktop */
+}
+
 /* ── Animations ── */
 @keyframes pulse-glow {
   0%, 100% { opacity: 1; }

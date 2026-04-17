@@ -61,15 +61,15 @@ function FeatureCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ delay, duration: 0.5 }}
-      className="group glass rounded-2xl p-7 hover:-translate-y-1 transition-all duration-300"
+      className="group glass rounded-2xl p-8 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center"
     >
       <div
-        className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
+        className="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
         style={{ background: `${accent}18`, border: `1px solid ${accent}28` }}
       >
         <Icon className="w-5 h-5" style={{ color: accent }} />
       </div>
-      <h3 className="text-base font-semibold text-white/90 mb-2">{title}</h3>
+      <h3 className="text-base font-semibold text-white/90 mb-3">{title}</h3>
       <p className="text-sm text-white/45 leading-relaxed">{description}</p>
     </motion.div>
   )
@@ -78,15 +78,19 @@ function FeatureCard({
 // ── Section eyebrow ──────────────────────────────────────────
 function SectionLabel({ number, label, color = 'rgba(139,92,246,0.5)' }: { number: string; label: string; color?: string }) {
   return (
-    <div className="flex items-center gap-4 mb-16">
+    <div className="flex items-center justify-center gap-4 mb-20">
+      <div
+        className="flex-1 h-px max-w-[80px]"
+        style={{ background: `linear-gradient(to left, ${color}, transparent)` }}
+      />
       <span
-        className="text-xs font-mono tracking-[0.2em] uppercase"
+        className="text-xs font-mono tracking-[0.25em] uppercase"
         style={{ color }}
       >
         {number} / {label}
       </span>
       <div
-        className="flex-1 h-px"
+        className="flex-1 h-px max-w-[80px]"
         style={{ background: `linear-gradient(to right, ${color}, transparent)` }}
       />
     </div>
@@ -135,7 +139,6 @@ export default function Landing() {
         {/* Full-bleed fake map background */}
         <div className="absolute inset-0 bg-[#0b0b12]">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.05)_1px,transparent_1px)] bg-[size:40px_40px]" />
-          {/* Heatmap density blobs */}
           <div className="absolute w-[500px] h-[500px] rounded-full bg-purple-600/20 blur-[120px]" style={{ top: '5%', left: '40%' }} />
           <div className="absolute w-72 h-72 rounded-full bg-fuchsia-500/15 blur-[90px]" style={{ top: '45%', left: '62%' }} />
           <div className="absolute w-56 h-56 rounded-full bg-purple-800/15 blur-[70px]" style={{ top: '20%', left: '28%' }} />
@@ -150,18 +153,18 @@ export default function Landing() {
           transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
         />
 
-        {/* Location pings — live on the right half */}
+        {/* Location pings */}
         <LocationPing x={55} y={18} color="#8b5cf6" label="Busy — CP" delay={1.3} />
         <LocationPing x={68} y={40} color="#22c55e" label="Safe — HKV" delay={1.6} />
         <LocationPing x={75} y={58} color="#f59e0b" label="Moderate" delay={1.9} />
         <LocationPing x={82} y={25} color="#ef4444" label="High Traffic" delay={2.2} />
         <LocationPing x={62} y={70} color="#06b6d4" label="Chill Zone" delay={2.5} />
 
-        {/* Gradient masks — left so text is readable, bottom for scroll indicator */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#09090f] via-[#09090f]/80 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#09090f] via-[#09090f]/20 to-transparent pointer-events-none" />
+        {/* Gradient masks — full overlay so centred text is readable */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#09090f]/90 via-[#09090f]/70 to-[#09090f]/50 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#09090f] via-[#09090f]/30 to-transparent pointer-events-none" />
 
-        {/* HUD — top right, floating UI elements */}
+        {/* HUD — top right */}
         <motion.div
           initial={{ opacity: 0, x: 16 }}
           animate={{ opacity: 1, x: 0 }}
@@ -180,7 +183,7 @@ export default function Landing() {
           </div>
         </motion.div>
 
-        {/* HUD — bottom right, density legend */}
+        {/* HUD — bottom right */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -196,14 +199,14 @@ export default function Landing() {
           </div>
         </motion.div>
 
-        {/* Hero text — left-aligned overlay */}
-        <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 lg:px-20 pt-20 z-10 max-w-3xl">
+        {/* Hero text — centred */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-6 pt-20 z-10 text-center">
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 glass-purple rounded-full px-4 py-2 text-sm font-medium text-purple-300 mb-8 w-fit"
+            className="inline-flex items-center gap-2 glass-purple rounded-full px-4 py-2 text-sm font-medium text-purple-300 mb-10"
           >
             <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
             Real-time city intelligence
@@ -213,7 +216,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.7 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] tracking-tight mb-6"
+            className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] tracking-tight mb-7"
           >
             Know the vibe
             <br />
@@ -226,16 +229,17 @@ export default function Landing() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.52, duration: 0.6 }}
-            className="text-lg text-white/45 max-w-md mb-10 leading-relaxed"
+            className="text-lg text-white/45 max-w-lg mb-12 leading-relaxed"
           >
-            Crowd density, safety scores, traffic flow, and area vibes — live on one gorgeous dark map.
+            Crowd density, safety scores, traffic flow, and area vibes —{' '}
+            live on one gorgeous dark map.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.68 }}
-            className="flex flex-col sm:flex-row items-start gap-3"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3"
           >
             <Button size="lg" onClick={() => navigate('/map')} className="group">
               <MapPin className="w-5 h-5" />
@@ -261,10 +265,13 @@ export default function Landing() {
         </motion.div>
       </section>
 
+      {/* ── Section gap ── */}
+      <div className="section-gap" />
+
       {/* ──────────────────────────────────────────────────────────
           SECTION 2 · STATS — Horizontal strip
       ────────────────────────────────────────────────────────── */}
-      <section className="bg-[#111118] border-y border-white/[0.06] py-14">
+      <section className="bg-[#111118] border-y border-white/[0.06] py-20">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-white/[0.06]">
             {[
@@ -279,10 +286,10 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="text-center px-8 py-2"
+                className="flex flex-col items-center text-center px-8 py-4"
               >
-                <Icon className="w-4 h-4 text-purple-400/50 mx-auto mb-3" />
-                <div className="text-2xl font-bold text-white mb-1">{value}</div>
+                <Icon className="w-4 h-4 text-purple-400/50 mb-4" />
+                <div className="text-2xl font-bold text-white mb-1.5">{value}</div>
                 <div className="text-xs text-white/30 uppercase tracking-widest">{label}</div>
               </motion.div>
             ))}
@@ -290,10 +297,13 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ── Section gap ── */}
+      <div className="section-gap" />
+
       {/* ──────────────────────────────────────────────────────────
           SECTION 3 · FEATURES
       ────────────────────────────────────────────────────────── */}
-      <section id="features" className="relative py-36 px-6 bg-[#09090f]">
+      <section id="features" className="relative py-32 px-6 bg-[#09090f]">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.02)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none" />
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
 
@@ -304,9 +314,9 @@ export default function Landing() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-16 max-w-2xl"
+            className="text-center mb-20 max-w-3xl mx-auto"
           >
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-5 leading-tight">
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
               Everything Google Maps{' '}
               <span className="text-white/20">won't</span>{' '}
               <span className="text-purple-400">tell you.</span>
@@ -316,7 +326,7 @@ export default function Landing() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <FeatureCard icon={Users} title="Live Crowd Density" description="Purple heatmap shows exactly how packed an area is right now — from empty to absolutely crammed." accent="#8b5cf6" delay={0} />
             <FeatureCard icon={Shield} title="Safety Score" description="Green, yellow, red zones based on crime data, lighting, and community reports. Know before you go." accent="#22c55e" delay={0.07} />
             <FeatureCard icon={TrendingUp} title="Traffic Heatmap" description="See which roads are choked and which are clear. Pick the fastest path, not just the shortest." accent="#f59e0b" delay={0.14} />
@@ -327,48 +337,62 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ── Section gap ── */}
+      <div className="section-gap" />
+
       {/* ──────────────────────────────────────────────────────────
           SECTION 4 · SAFETY
       ────────────────────────────────────────────────────────── */}
-      <section id="safety" className="relative py-36 px-6 bg-[#0d0d16]">
+      <section id="safety" className="relative py-32 px-6 bg-[#0d0d16]">
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_60%_at_100%_50%,rgba(34,197,94,0.04),transparent)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(34,197,94,0.04),transparent)] pointer-events-none" />
 
         <div className="max-w-6xl mx-auto relative">
           <SectionLabel number="02" label="Safety" color="rgba(34,197,94,0.45)" />
 
-          <div className="grid md:grid-cols-2 gap-20 items-center">
+          {/* Safety heading — centred */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-20 max-w-3xl mx-auto"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Built especially for{' '}
+              <span className="text-emerald-400">women</span>
+              {' '}and{' '}
+              <span className="text-purple-400">solo travellers.</span>
+            </h2>
+            <p className="text-white/40 text-lg leading-relaxed">
+              Real safety data — not averages. Which neighbourhoods are well-lit at night,
+              which spots have foot traffic for safety in numbers, and which to genuinely avoid.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-14 items-start max-w-5xl mx-auto">
+
+            {/* Safety checklist — centred */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              className="flex flex-col items-center text-center"
             >
-              <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                Built especially for{' '}
-                <span className="text-emerald-400">women</span>
-                {' '}and{' '}
-                <span className="text-purple-400">solo travellers.</span>
-              </h2>
-              <p className="text-white/40 text-lg leading-relaxed mb-10">
-                Real safety data — not averages. Which neighbourhoods are well-lit at night,
-                which spots have foot traffic for safety in numbers, and which to genuinely avoid.
-              </p>
-
-              <div className="space-y-4">
+              <div className="space-y-5 w-full max-w-sm">
                 {[
                   { icon: Shield, label: 'Crime-rate overlays by neighbourhood', color: '#22c55e' },
                   { icon: Eye, label: 'Lighting quality scores', color: '#06b6d4' },
                   { icon: Users, label: 'Foot traffic patterns by hour', color: '#8b5cf6' },
                   { icon: Navigation, label: 'Fastest & safest route combined', color: '#f59e0b' },
                 ].map(({ icon: Icon, label, color }) => (
-                  <div key={label} className="flex items-center gap-3">
+                  <div key={label} className="flex items-center gap-4">
                     <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                       style={{ background: `${color}18`, border: `1px solid ${color}25` }}
                     >
                       <Icon className="w-4 h-4" style={{ color }} />
                     </div>
-                    <span className="text-white/55 text-sm">{label}</span>
+                    <span className="text-white/55 text-sm text-left">{label}</span>
                   </div>
                 ))}
               </div>
@@ -382,12 +406,12 @@ export default function Landing() {
               className="relative"
             >
               <div className="glass rounded-2xl p-8 border border-emerald-500/10">
-                <div className="flex items-center justify-between mb-7">
+                <div className="flex items-center justify-between mb-8">
                   <span className="text-sm font-semibold text-white/65">Area Safety Overview</span>
                   <Badge variant="safe" dot>Live</Badge>
                 </div>
 
-                <div className="space-y-5">
+                <div className="space-y-6">
                   {[
                     { name: 'Hauz Khas Village', level: 'safe', score: 92 },
                     { name: 'Lodhi Garden', level: 'safe', score: 96 },
@@ -424,10 +448,13 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ── Section gap ── */}
+      <div className="section-gap" />
+
       {/* ──────────────────────────────────────────────────────────
           SECTION 5 · VIBES
       ────────────────────────────────────────────────────────── */}
-      <section id="vibes" className="relative py-36 px-6 bg-[#111118]">
+      <section id="vibes" className="relative py-32 px-6 bg-[#111118]">
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(6,182,212,0.04),transparent_60%)] pointer-events-none" />
 
@@ -438,14 +465,14 @@ export default function Landing() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-20 max-w-3xl mx-auto"
           >
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
               Places tagged for{' '}
               <span className="text-cyan-400">who you are,</span>
               <br />not who they think you are.
             </h2>
-            <p className="text-white/40 text-lg max-w-md mx-auto">
+            <p className="text-white/40 text-lg leading-relaxed">
               Introvert? Extrovert? Solo explorer? We tag areas so you feel seen — never judged.
             </p>
           </motion.div>
@@ -479,10 +506,13 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ── Section gap ── */}
+      <div className="section-gap" />
+
       {/* ──────────────────────────────────────────────────────────
           SECTION 6 · CTA
       ────────────────────────────────────────────────────────── */}
-      <section className="relative py-44 px-6 bg-[#09090f] overflow-hidden">
+      <section className="relative py-48 px-6 bg-[#09090f] overflow-hidden">
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(139,92,246,0.10),transparent_70%)] pointer-events-none" />
         <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
@@ -493,11 +523,11 @@ export default function Landing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-10">
               <QmapTextEffect speed={0.8} className="text-purple-300" />
             </div>
 
-            <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+            <h2 className="text-5xl md:text-7xl font-bold text-white mb-7 leading-tight">
               Ready to explore
               <br />
               <span className="bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-300 bg-clip-text text-transparent">
@@ -505,7 +535,7 @@ export default function Landing() {
               </span>
             </h2>
 
-            <p className="text-white/35 text-xl mb-12 leading-relaxed">
+            <p className="text-white/35 text-xl mb-14 leading-relaxed">
               No account. No ads. No gatekeeping.
               <br />Just the truth about where you're heading.
             </p>
@@ -520,7 +550,7 @@ export default function Landing() {
               <ArrowRight className="w-5 h-5" />
             </Button>
 
-            <div className="mt-10 flex items-center justify-center gap-8 text-xs text-white/18">
+            <div className="mt-12 flex items-center justify-center gap-8 text-xs text-white/18">
               <span className="flex items-center gap-1.5"><Lock className="w-3 h-3" />No sign-up needed</span>
               <span className="flex items-center gap-1.5"><Wifi className="w-3 h-3" />Live data</span>
               <span className="flex items-center gap-1.5"><Star className="w-3 h-3" />100% free</span>
@@ -530,8 +560,8 @@ export default function Landing() {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-white/[0.06] py-10 px-6 bg-[#09090f]">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/18">
+      <footer className="border-t border-white/[0.06] py-12 px-6 bg-[#09090f]">
+        <div className="max-w-6xl mx-auto flex flex-col items-center gap-4 text-sm text-white/18 text-center">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-md bg-purple-600 flex items-center justify-center">
               <MapPin className="w-3 h-3 text-white" />
