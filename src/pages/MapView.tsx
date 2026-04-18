@@ -10,7 +10,8 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   MapPin, Search, ArrowLeft,
-  Layers, X, Info
+  Layers, X, Info, Plus, Minus,
+  Shield, AlertTriangle, Siren,
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useMapStore, type AreaData } from '@/store/useMapStore'
@@ -51,6 +52,46 @@ const heatmapLayer: LayerProps = {
   },
 }
 
+// ── SVG teardrop pin ──────────────────────────────────────────
+function TearPin({ color, size, PinIcon }: {
+  color: string
+  size: number
+  PinIcon: React.ComponentType<{ size?: number; color?: string }>
+}) {
+  return (
+    <div style={{ position: 'relative', width: size, height: Math.round(size * 1.35) }}>
+      <svg
+        width={size}
+        height={Math.round(size * 1.35)}
+        viewBox="0 0 40 54"
+        fill="none"
+        style={{ position: 'absolute', top: 0, left: 0 }}
+      >
+        <path
+          d="M20 0C8.954 0 0 8.954 0 20C0 34 20 54 20 54C20 54 40 34 40 20C40 8.954 31.046 0 20 0Z"
+          fill={color}
+        />
+        {/* inner highlight circle */}
+        <circle cx="20" cy="20" r="12" fill="rgba(255,255,255,0.18)" />
+        <circle cx="20" cy="20" r="11" fill="rgba(0,0,0,0.12)" />
+      </svg>
+      {/* Icon centred in the bubble */}
+      <div style={{
+        position: 'absolute',
+        top: '37%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pointerEvents: 'none',
+      }}>
+        <PinIcon size={Math.round(size * 0.38)} color="white" />
+      </div>
+    </div>
+  )
+}
+
 // ── Area marker component ─────────────────────────────────────
 function AreaMarker({
   area,
@@ -62,13 +103,21 @@ function AreaMarker({
   activeLayers: string[]
 }) {
   const { selectArea } = useMapStore()
+  const [hovered, setHovered] = useState(false)
 
-  const dotColor =
+  const pinColor =
     activeLayers.includes('safety')
       ? getSafetyColor(area.safetyLevel)
       : activeLayers.includes('crowd')
       ? `hsl(${280 - area.crowdDensity * 0.6}, 85%, 65%)`
       : '#8b5cf6'
+
+  const PinIcon =
+    area.safetyLevel === 'safe'     ? Shield :
+    area.safetyLevel === 'moderate' ? AlertTriangle :
+                                      Siren
+
+  const pinSize = isActive ? 46 : hovered ? 40 : 34
 
   return (
     <Marker
@@ -83,48 +132,60 @@ function AreaMarker({
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        whileHover={{ scale: 1.2 }}
-        className="cursor-pointer"
-        style={{ position: 'relative' }}
+        onHoverStart={() => setHovered(true)}
+        onHoverEnd={() => setHovered(false)}
+        className="cursor-pointer relative select-none"
+        style={{ filter: (isActive || hovered) ? `drop-shadow(0 0 10px ${pinColor}cc)` : `drop-shadow(0 3px 8px ${pinColor}66)` }}
       >
-        {/* Ripple for active / high density */}
+        {/* Pulse ring — active or high density */}
         {(isActive || area.crowdDensity > 70) && (
           <motion.div
-            className="absolute inset-0 rounded-full"
-            style={{ background: dotColor, opacity: 0.3, top: '-4px', left: '-4px', right: '-4px', bottom: '-4px' }}
-            animate={{ scale: [1, 1.8, 1], opacity: [0.3, 0, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute rounded-full pointer-events-none"
+            style={{
+              background: pinColor,
+              width: pinSize * 0.7,
+              height: pinSize * 0.7,
+              top: '10%',
+              left: '50%',
+              translateX: '-50%',
+              opacity: 0.25,
+            }}
+            animate={{ scale: [1, 2.2, 1], opacity: [0.25, 0, 0.25] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
           />
         )}
 
-        {/* Pin */}
-        <div
-          className="relative z-10 rounded-full border-2 border-white/80 shadow-lg transition-all duration-200"
-          style={{
-            width: isActive ? 18 : 12,
-            height: isActive ? 18 : 12,
-            background: dotColor,
-            boxShadow: isActive ? `0 0 16px ${dotColor}` : undefined,
-          }}
-        />
+        <motion.div
+          animate={{ scale: isActive ? 1.1 : 1 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        >
+          <TearPin color={pinColor} size={pinSize} PinIcon={PinIcon} />
+        </motion.div>
 
-        {/* Label on active */}
-        {isActive && (
+        {/* Name label — always visible; expanded on active */}
+        {isActive ? (
           <motion.div
-            initial={{ opacity: 0, y: 4, scale: 0.9 }}
+            initial={{ opacity: 0, y: 6, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap glass rounded-xl px-3 py-1.5 text-xs font-semibold text-white shadow-lg"
-            style={{ border: `1px solid ${dotColor}40` }}
+            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap glass rounded-xl px-3 py-1.5 text-xs font-semibold text-white shadow-lg z-10"
+            style={{ border: `1px solid ${pinColor}50` }}
           >
             {area.name}
             <div className="flex items-center gap-1.5 mt-0.5">
               <span className="text-white/45">{getDensityLabel(area.crowdDensity)}</span>
               <span className="text-white/20">·</span>
-              <span style={{ color: dotColor }}>
+              <span style={{ color: pinColor }}>
                 {area.safetyLevel === 'safe' ? 'Safe' : area.safetyLevel === 'moderate' ? 'Moderate' : '⚠ Caution'}
               </span>
             </div>
           </motion.div>
+        ) : (
+          <div
+            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 whitespace-nowrap text-[10px] font-semibold text-white/70 pointer-events-none select-none"
+            style={{ textShadow: '0 1px 6px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.6)' }}
+          >
+            {area.name}
+          </div>
         )}
       </motion.div>
     </Marker>
@@ -196,6 +257,68 @@ export default function MapView() {
     [selectArea],
   )
 
+  // Road recoloring + hover glow on map load
+  const onMapLoad = useCallback(() => {
+    const map = mapRef.current?.getMap()
+    if (!map) return
+
+    const style = map.getStyle()
+    const roadLayerIds: string[] = []
+
+    // Road color tiers: minor → subtle violet, secondary → medium purple, primary/motorway → bright violet
+    const getRoadColor = (id: string) => {
+      if (id.includes('motorway') || id.includes('trunk'))         return '#8b5cf6'
+      if (id.includes('primary'))                                   return '#7c3aed'
+      if (id.includes('secondary') || id.includes('tertiary'))     return '#5b21b6'
+      if (id.includes('minor') || id.includes('service'))          return '#3b1a7a'
+      return '#4a1d9a'
+    }
+    const getRoadOpacity = (id: string) => {
+      if (id.includes('motorway') || id.includes('trunk'))         return 0.9
+      if (id.includes('primary'))                                   return 0.78
+      if (id.includes('secondary') || id.includes('tertiary'))     return 0.6
+      return 0.4
+    }
+
+    style.layers.forEach((layer) => {
+      if (layer.type !== 'line') return
+      const srcLayer = (layer as Record<string, unknown>)['source-layer'] as string | undefined
+      if (srcLayer !== 'transportation') return
+      if (/rail|transit|ferry|aeroway/.test(layer.id)) return
+
+      try {
+        map.setPaintProperty(layer.id, 'line-color', getRoadColor(layer.id))
+        map.setPaintProperty(layer.id, 'line-opacity', getRoadOpacity(layer.id))
+        roadLayerIds.push(layer.id)
+      } catch { /* layer may not support paint override */ }
+    })
+
+    // Hover: brighten all roads when cursor enters any road feature
+    const handleRoadEnter = () => {
+      roadLayerIds.forEach((id) => {
+        try {
+          map.setPaintProperty(id, 'line-opacity', Math.min(getRoadOpacity(id) + 0.3, 1))
+          map.setPaintProperty(id, 'line-color', '#a78bfa')
+        } catch {}
+      })
+      map.getCanvas().style.cursor = 'pointer'
+    }
+    const handleRoadLeave = () => {
+      roadLayerIds.forEach((id) => {
+        try {
+          map.setPaintProperty(id, 'line-opacity', getRoadOpacity(id))
+          map.setPaintProperty(id, 'line-color', getRoadColor(id))
+        } catch {}
+      })
+      map.getCanvas().style.cursor = ''
+    }
+
+    roadLayerIds.forEach((id) => {
+      map.on('mouseenter', id, handleRoadEnter)
+      map.on('mouseleave', id, handleRoadLeave)
+    })
+  }, [])
+
   return (
     <div className="relative w-full h-screen bg-[#09090f] overflow-hidden">
 
@@ -204,6 +327,7 @@ export default function MapView() {
         ref={mapRef}
         {...viewState}
         onMove={(e) => setViewState(e.viewState)}
+        onLoad={onMapLoad}
         mapStyle={MAP_STYLE}
         style={{ width: '100%', height: '100%' }}
         onClick={() => { if (selectedArea) selectArea(null) }}
@@ -308,6 +432,32 @@ export default function MapView() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── Zoom controls ── */}
+      <motion.div
+        initial={{ opacity: 0, x: 12 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.4 }}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-1"
+      >
+        <button
+          onClick={() => mapRef.current?.zoomIn()}
+          className="w-11 h-11 flex flex-col items-center justify-center glass rounded-xl border border-white/10 text-white/60 hover:text-purple-300 hover:border-purple-500/40 hover:bg-purple-500/10 transition-all duration-200 group shadow-lg"
+          aria-label="Zoom in"
+        >
+          <Plus className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          <span className="text-[8px] text-white/25 font-mono mt-0.5">+</span>
+        </button>
+        <div className="w-px h-3 bg-white/10" />
+        <button
+          onClick={() => mapRef.current?.zoomOut()}
+          className="w-11 h-11 flex flex-col items-center justify-center glass rounded-xl border border-white/10 text-white/60 hover:text-purple-300 hover:border-purple-500/40 hover:bg-purple-500/10 transition-all duration-200 group shadow-lg"
+          aria-label="Zoom out"
+        >
+          <Minus className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          <span className="text-[8px] text-white/25 font-mono mt-0.5">−</span>
+        </button>
+      </motion.div>
 
       {/* ── Crowd density legend ── */}
       {activeLayers.includes('crowd') && (

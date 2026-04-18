@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   X, Clock, Navigation, MapPin,
-  Bus, Train, Car, Bike, ChevronRight, AlertTriangle, CheckCircle, Info
+  Bus, Train, Car, Bike, ChevronRight, AlertTriangle, CheckCircle, Info,
+  Coffee, ShoppingBag, Hotel, Hospital, Shield,
 } from 'lucide-react'
 import { useMapStore } from '@/store/useMapStore'
 import { Badge } from '@/components/ui/badge'
@@ -84,6 +85,60 @@ function ReactionBar({ areaId }: { areaId: string }) {
             )
           },
         )}
+      </div>
+    </div>
+  )
+}
+
+const safeNearbyIconMap = {
+  cafe:     { Icon: Coffee,      color: '#f59e0b', label: 'Cafe'     },
+  mall:     { Icon: ShoppingBag, color: '#06b6d4', label: 'Mall'     },
+  hotel:    { Icon: Hotel,       color: '#8b5cf6', label: 'Hotel'    },
+  hospital: { Icon: Hospital,    color: '#ef4444', label: 'Hospital' },
+  metro:    { Icon: Train,       color: '#22c55e', label: 'Metro'    },
+  park:     { Icon: Shield,      color: '#10b981', label: 'Park'     },
+} as const
+
+function SafeNearbySection({ places }: { places: { name: string; type: keyof typeof safeNearbyIconMap; note: string }[] }) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <Shield className="w-3.5 h-3.5 text-emerald-400" />
+        <p className="text-xs font-semibold text-white/60">Nearby Safe Spots</p>
+        <span className="text-[10px] text-white/25 ml-auto">click to shelter here</span>
+      </div>
+      <div className="space-y-2">
+        {places.map((place, i) => {
+          const { Icon, color, label } = safeNearbyIconMap[place.type]
+          return (
+            <motion.div
+              key={place.name}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.07 }}
+              className="flex items-start gap-3 p-2.5 rounded-xl border border-white/7 bg-white/3 hover:bg-white/6 transition-colors cursor-default"
+            >
+              <div
+                className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                style={{ background: `${color}18`, border: `1px solid ${color}28` }}
+              >
+                <Icon className="w-3.5 h-3.5" style={{ color }} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <span className="text-xs font-semibold text-white/80 truncate">{place.name}</span>
+                  <span
+                    className="text-[9px] font-medium px-1.5 py-0.5 rounded-full shrink-0"
+                    style={{ background: `${color}18`, color }}
+                  >
+                    {label}
+                  </span>
+                </div>
+                <p className="text-[11px] text-white/40 leading-relaxed">{place.note}</p>
+              </div>
+            </motion.div>
+          )
+        })}
       </div>
     </div>
   )
@@ -228,6 +283,9 @@ export function AreaPanel() {
               </div>
               <p className="text-xs text-white/55 leading-relaxed">{selectedArea.shortcutFrom}</p>
             </div>
+
+            {/* Nearby safe spots */}
+            <SafeNearbySection places={selectedArea.safeNearby} />
 
             {/* Community reactions */}
             <ReactionBar areaId={selectedArea.id} />

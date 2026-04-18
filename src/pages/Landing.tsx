@@ -249,14 +249,33 @@ export default function Landing() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.9, duration: 0.6 }}
-          className="absolute bottom-28 right-5 z-20 glass rounded-2xl p-4"
+          className="absolute bottom-28 right-5 z-20 flex flex-col gap-2 items-end"
         >
-          <div className="text-[10px] text-white/30 uppercase tracking-widest mb-2">Crowd Density</div>
-          <div className="flex items-center gap-1.5">
-            {['#1a0030', '#4a148c', '#7b1fa2', '#aa00ff', '#e040fb'].map((c, i) => (
-              <div key={i} className="w-7 h-2.5 rounded" style={{ background: c }} />
-            ))}
-            <span className="text-[10px] text-white/20 ml-1">Max</span>
+          {/* Safety legend */}
+          <div className="glass rounded-2xl px-4 py-3">
+            <div className="text-[10px] text-white/30 uppercase tracking-widest mb-2">Safety Zones</div>
+            <div className="flex flex-col gap-1.5">
+              {[
+                { color: '#22c55e', label: 'Safe' },
+                { color: '#f59e0b', label: 'Moderate' },
+                { color: '#ef4444', label: 'Use Caution' },
+              ].map(({ color, label }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: color }} />
+                  <span className="text-[10px] text-white/45">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Crowd density legend */}
+          <div className="glass rounded-2xl p-4">
+            <div className="text-[10px] text-white/30 uppercase tracking-widest mb-2">Crowd Density</div>
+            <div className="flex items-center gap-1.5">
+              {['#1a0030', '#4a148c', '#7b1fa2', '#aa00ff', '#e040fb'].map((c, i) => (
+                <div key={i} className="w-7 h-2.5 rounded" style={{ background: c }} />
+              ))}
+              <span className="text-[10px] text-white/20 ml-1">Max</span>
+            </div>
           </div>
         </motion.div>
 

@@ -20,6 +20,7 @@ export interface AreaData {
   coordinates: [number, number]
   description: string
   tags: string[]
+  safeNearby: { name: string; type: 'cafe' | 'mall' | 'hotel' | 'hospital' | 'metro' | 'park'; note: string }[]
 }
 
 interface MapState {
