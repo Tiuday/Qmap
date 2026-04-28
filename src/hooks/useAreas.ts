@@ -24,6 +24,7 @@ function rowToArea(row: Record<string, unknown>): AreaData {
     ],
     description: (row.description as string) ?? '',
     tags: (row.tags as string[]) ?? [],
+    safeNearby: [],
   }
 }
 

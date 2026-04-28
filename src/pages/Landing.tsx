@@ -188,20 +188,56 @@ export default function Landing() {
           <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.055)_1px,transparent_1px)] bg-[size:44px_44px]" />
         </div>
 
-        {/* Ambient blobs */}
+        {/* Ambient heatmap blobs — representing Delhi density zones */}
+        {/* Central Delhi / CP cluster */}
         <motion.div
           className="absolute w-[600px] h-[600px] rounded-full bg-purple-600/18 blur-[130px] pointer-events-none"
-          style={{ top: '0%', left: '35%' }}
-          animate={{ scale: [1, 1.08, 1], opacity: [0.18, 0.25, 0.18] }}
+          style={{ top: '-5%', left: '35%' }}
+          animate={{ scale: [1, 1.08, 1], opacity: [0.18, 0.27, 0.18] }}
           transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
         />
+        {/* South Delhi / HKV cluster */}
         <motion.div
-          className="absolute w-80 h-80 rounded-full bg-fuchsia-500/12 blur-[100px] pointer-events-none"
-          style={{ top: '50%', left: '65%' }}
-          animate={{ scale: [1, 1.12, 1] }}
+          className="absolute w-80 h-80 rounded-full bg-fuchsia-500/14 blur-[100px] pointer-events-none"
+          style={{ top: '50%', left: '62%' }}
+          animate={{ scale: [1, 1.12, 1], opacity: [0.14, 0.22, 0.14] }}
           transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
         />
-        <div className="absolute w-56 h-56 rounded-full bg-cyan-500/08 blur-[80px] pointer-events-none" style={{ top: '70%', left: '75%' }} />
+        {/* North Delhi / Chandni Chowk cluster */}
+        <motion.div
+          className="absolute w-64 h-64 rounded-full bg-amber-500/10 blur-[90px] pointer-events-none"
+          style={{ top: '5%', left: '80%' }}
+          animate={{ scale: [1, 1.1, 1], opacity: [0.10, 0.18, 0.10] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        />
+        {/* West Delhi / Rajouri cluster */}
+        <motion.div
+          className="absolute w-56 h-56 rounded-full bg-purple-800/12 blur-[80px] pointer-events-none"
+          style={{ top: '20%', left: '5%' }}
+          animate={{ scale: [1, 1.09, 1], opacity: [0.12, 0.20, 0.12] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+        />
+        {/* SW Delhi / Vasant Kunj cluster */}
+        <motion.div
+          className="absolute w-48 h-48 rounded-full bg-cyan-500/08 blur-[70px] pointer-events-none"
+          style={{ top: '68%', left: '12%' }}
+          animate={{ scale: [1, 1.11, 1] }}
+          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+        />
+        {/* SE Delhi / Nehru Place cluster */}
+        <motion.div
+          className="absolute w-44 h-44 rounded-full bg-emerald-500/08 blur-[65px] pointer-events-none"
+          style={{ top: '60%', left: '82%' }}
+          animate={{ scale: [1, 1.13, 1], opacity: [0.08, 0.14, 0.08] }}
+          transition={{ duration: 8.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+        />
+        {/* Danger zone / Paharganj — muted red */}
+        <motion.div
+          className="absolute w-32 h-32 rounded-full bg-red-600/08 blur-[60px] pointer-events-none"
+          style={{ top: '30%', left: '50%' }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.14, 0.08] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
+        />
 
         {/* Animated scan line */}
         <motion.div
@@ -210,12 +246,25 @@ export default function Landing() {
           transition={{ duration: 11, repeat: Infinity, ease: 'linear' }}
         />
 
-        {/* Location pings */}
-        <LocationPing x={56} y={16} color="#8b5cf6" label="Busy — CP"     delay={1.3} />
-        <LocationPing x={70} y={38} color="#22c55e" label="Safe — HKV"    delay={1.7} />
-        <LocationPing x={78} y={56} color="#f59e0b" label="Moderate"      delay={2.1} />
-        <LocationPing x={84} y={24} color="#ef4444" label="High Traffic"  delay={2.5} />
-        <LocationPing x={64} y={68} color="#06b6d4" label="Chill Zone"    delay={2.9} />
+        {/* Location pings — spread across Delhi's geography */}
+        {/* Central */}
+        <LocationPing x={56} y={16} color="#8b5cf6" label="CP — Packed"         delay={1.3} />
+        <LocationPing x={47} y={22} color="#f59e0b" label="Janpath — Busy"       delay={1.6} />
+        {/* North */}
+        <LocationPing x={86} y={10} color="#ef4444" label="Chandni Chowk"        delay={1.9} />
+        <LocationPing x={90} y={22} color="#06b6d4" label="Majnu Ka Tila"        delay={2.2} />
+        {/* West */}
+        <LocationPing x={12} y={26} color="#f59e0b" label="Rajouri — Moderate"   delay={2.5} />
+        <LocationPing x={24} y={16} color="#ef4444" label="Karol Bagh — Traffic" delay={2.8} />
+        {/* South Central */}
+        <LocationPing x={70} y={38} color="#22c55e" label="HKV — Safe"           delay={3.1} />
+        <LocationPing x={60} y={50} color="#22c55e" label="Khan Market — Chill"  delay={3.4} />
+        {/* South */}
+        <LocationPing x={78} y={58} color="#22c55e" label="Defence Colony"       delay={3.7} />
+        <LocationPing x={88} y={46} color="#f59e0b" label="Nehru Place"          delay={4.0} />
+        {/* South West */}
+        <LocationPing x={16} y={66} color="#06b6d4" label="Vasant Kunj — Chill"  delay={4.3} />
+        <LocationPing x={66} y={70} color="#22c55e" label="GK-1 — Safe"          delay={4.6} />
 
         {/* Dark overlay — ensures centred text is always legible */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#09090f]/60 via-[#09090f]/55 to-[#09090f]   pointer-events-none" />
@@ -232,6 +281,11 @@ export default function Landing() {
             <MapPin className="w-3 h-3 text-purple-400" />
             <span className="text-white/55">Delhi, India</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          </div>
+          <div className="glass rounded-xl px-3.5 py-2 flex items-center gap-2 text-xs">
+            <span className="text-white/35">18 zones</span>
+            <span className="w-px h-3 bg-white/10" />
+            <span className="text-emerald-400/80">tracked live</span>
           </div>
           <div className="flex gap-1.5">
             {[
@@ -367,7 +421,7 @@ export default function Landing() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4">
             {[
-              { value: '50+',    label: 'Areas mapped',       sub: 'across Delhi NCR',   icon: MapPin,  color: '#8b5cf6' },
+              { value: '18+',    label: 'Areas mapped',       sub: 'across Delhi NCR',   icon: MapPin,  color: '#8b5cf6' },
               { value: 'Live',   label: 'Real-time data',     sub: 'updated every min',  icon: Wifi,    color: '#06b6d4' },
               { value: '0 bias', label: 'Verified inclusive', sub: 'for every identity', icon: Heart,   color: '#ec4899' },
               { value: 'Free',   label: 'Always & forever',   sub: 'no account needed',  icon: Star,    color: '#f59e0b' },
@@ -533,13 +587,21 @@ export default function Landing() {
                 <Badge variant="safe" dot>Live</Badge>
               </div>
 
-              <div className="space-y-7">
+              <div className="space-y-5">
                 {[
-                  { name: 'Hauz Khas Village', level: 'safe',     score: 92 },
-                  { name: 'Lodhi Garden',       level: 'safe',     score: 96 },
-                  { name: 'Saket SCW',          level: 'safe',     score: 88 },
-                  { name: 'Connaught Place',    level: 'moderate', score: 64 },
-                  { name: 'Paharganj',          level: 'danger',   score: 31 },
+                  { name: 'Lodhi Garden',        level: 'safe',     score: 96 },
+                  { name: 'Khan Market',          level: 'safe',     score: 93 },
+                  { name: 'Hauz Khas Village',   level: 'safe',     score: 92 },
+                  { name: 'Defence Colony',       level: 'safe',     score: 89 },
+                  { name: 'Dilli Haat',           level: 'safe',     score: 90 },
+                  { name: 'GK-1 M Block',         level: 'safe',     score: 87 },
+                  { name: 'Saket SCW',            level: 'safe',     score: 88 },
+                  { name: 'Majnu Ka Tila',        level: 'safe',     score: 85 },
+                  { name: 'Connaught Place',      level: 'moderate', score: 64 },
+                  { name: 'Janpath Market',       level: 'moderate', score: 60 },
+                  { name: 'Karol Bagh',           level: 'moderate', score: 56 },
+                  { name: 'Nehru Place',          level: 'moderate', score: 52 },
+                  { name: 'Paharganj',            level: 'danger',   score: 31 },
                 ].map((area) => {
                   const color = area.level === 'safe' ? '#22c55e'
                               : area.level === 'moderate' ? '#f59e0b'

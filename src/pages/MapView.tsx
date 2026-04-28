@@ -56,7 +56,7 @@ const heatmapLayer: LayerProps = {
 function TearPin({ color, size, PinIcon }: {
   color: string
   size: number
-  PinIcon: React.ComponentType<{ size?: number; color?: string }>
+  PinIcon: React.ComponentType<{ size?: number | string; color?: string; className?: string }>
 }) {
   return (
     <div style={{ position: 'relative', width: size, height: Math.round(size * 1.35) }}>
